@@ -1,0 +1,8 @@
+# terraform files
+.terraform/
+
+# sensitive files
+*.secret.tf
+
+# intellij files
+.idea/

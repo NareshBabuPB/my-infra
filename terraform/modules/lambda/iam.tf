@@ -1,16 +1,18 @@
-resource "aws_iam_role" "lambda_exec" {
+resource "aws_iam_role" "conversion_lambda_exec" {
+  name               = "number-to-words-conversion-lambda-role"
   assume_role_policy = "${data.aws_iam_policy_document.lambda_exec_policy.json}"
 }
 
 data "aws_iam_policy_document" "lambda_exec_policy" {
-  "statement" {
+  statement {
     actions = [
       "sts:AssumeRole",
     ]
 
     principals {
       identifiers = ["lambda.amazonaws.com"]
-      type        = "service"
+
+      type = "Service"
     }
 
     effect = "Allow"

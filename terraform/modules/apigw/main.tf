@@ -31,6 +31,17 @@ resource "aws_api_gateway_integration" "convert_number_to_words_get" {
 
   integration_http_method = "POST"
   uri                     = "${var.number_to_words_api_uri}"
+
+  request_parameters {
+    inputNumber = "method.request.querystring.inputNumber"
+  }
+}
+
+resource "aws_api_gateway_request_validator" "number_to_words_api_request_validator" {
+  name                        = "number-to-words-api-request-validator"
+  rest_api_id                 = "${aws_api_gateway_rest_api.number_to_words_api.id}"
+  validate_request_body       = false
+  validate_request_parameters = true
 }
 
 resource "aws_api_gateway_deployment" "number_to_words_api_deployment" {

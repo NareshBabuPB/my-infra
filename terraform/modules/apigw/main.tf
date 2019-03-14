@@ -12,7 +12,7 @@ resource "aws_api_gateway_resource" "convert" {
 
 resource "aws_api_gateway_resource" "convert_number_to_words" {
   parent_id   = "${aws_api_gateway_resource.convert.id}"
-  path_part   = "convert"
+  path_part   = "number-to-words"
   rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
 }
 
@@ -29,6 +29,17 @@ resource "aws_api_gateway_integration" "convert_number_to_words_get" {
   rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
   type        = "AWS_PROXY"
 
-  integration_http_method = "GET"
+  integration_http_method = "POST"
   uri                     = "${var.number_to_words_api_uri}"
+}
+
+resource "aws_api_gateway_deployment" "number_to_words_api_deployment" {
+  rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
+  stage_name  = "live"
+}
+
+resource "aws_api_gateway_stage" "number_to_words_api_stage" {
+  deployment_id = "${aws_api_gateway_deployment.number_to_words_api_deployment.id}"
+  rest_api_id   = "${aws_api_gateway_rest_api.number_to_words_api.id}"
+  stage_name    = "live"
 }

@@ -32,8 +32,8 @@ resource "aws_api_gateway_integration" "convert_number_to_words_get" {
   integration_http_method = "POST"
   uri                     = "${var.number_to_words_api_uri}"
 
-  request_parameters {
-    inputNumber = "method.request.querystring.inputNumber"
+  request_templates = {
+    "application/json" = "${file("${path.module}/template/query_string_mapping.template")}"
   }
 }
 

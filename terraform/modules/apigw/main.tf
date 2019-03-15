@@ -21,6 +21,12 @@ resource "aws_api_gateway_method" "convert_number_to_words_get" {
   http_method   = "GET"
   resource_id   = "${aws_api_gateway_resource.convert_number_to_words.id}"
   rest_api_id   = "${aws_api_gateway_rest_api.number_to_words_api.id}"
+
+  request_validator_id = "${aws_api_gateway_request_validator.number_to_words_api_request_validator.id}"
+
+  request_parameters {
+    "method.request.querystring.inputNumber" = true
+  }
 }
 
 resource "aws_api_gateway_integration" "convert_number_to_words_get" {

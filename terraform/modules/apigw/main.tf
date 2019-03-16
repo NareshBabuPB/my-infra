@@ -33,7 +33,7 @@ resource "aws_api_gateway_integration" "convert_number_to_words_get" {
   http_method = "${aws_api_gateway_method.convert_number_to_words_get.http_method}"
   resource_id = "${aws_api_gateway_resource.convert_number_to_words.id}"
   rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
-  type        = "AWS_PROXY"
+  type        = "AWS"
 
   integration_http_method = "POST"
   uri                     = "${var.number_to_words_api_uri}"
@@ -48,6 +48,24 @@ resource "aws_api_gateway_request_validator" "number_to_words_api_request_valida
   rest_api_id                 = "${aws_api_gateway_rest_api.number_to_words_api.id}"
   validate_request_body       = false
   validate_request_parameters = true
+}
+
+resource "aws_api_gateway_method_response" "number_to_words_api_response" {
+  http_method = "${aws_api_gateway_method.convert_number_to_words_get.http_method}"
+  resource_id = "${aws_api_gateway_resource.convert_number_to_words.id}"
+  rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
+  status_code = "200"
+}
+
+resource "aws_api_gateway_integration_response" "number_to_words_api_get" {
+  http_method = "${aws_api_gateway_method.convert_number_to_words_get.http_method}"
+  resource_id = "${aws_api_gateway_resource.convert_number_to_words.id}"
+  rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
+  status_code = "${aws_api_gateway_method_response.number_to_words_api_response.status_code}"
+
+  response_templates = {
+    "application/json" = "${file("${path.module}/template/response_mapping.template")}"
+  }
 }
 
 resource "aws_api_gateway_deployment" "number_to_words_api_deployment" {

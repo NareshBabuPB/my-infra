@@ -70,11 +70,25 @@ resource "aws_api_gateway_integration_response" "number_to_words_api_get" {
 
 resource "aws_api_gateway_deployment" "number_to_words_api_deployment" {
   rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
-  stage_name  = "live"
+  stage_name  = ""
 }
 
 resource "aws_api_gateway_stage" "number_to_words_api_stage" {
   deployment_id = "${aws_api_gateway_deployment.number_to_words_api_deployment.id}"
   rest_api_id   = "${aws_api_gateway_rest_api.number_to_words_api.id}"
   stage_name    = "live"
+}
+
+resource "aws_api_gateway_account" "api_account" {
+  cloudwatch_role_arn = "${var.cw_role_arn}"
+}
+
+resource "aws_api_gateway_method_settings" "api_method_config" {
+  method_path = "*/*"
+  rest_api_id = "${aws_api_gateway_rest_api.number_to_words_api.id}"
+  stage_name  = "live"
+
+  "settings" {
+    logging_level = "INFO"
+  }
 }

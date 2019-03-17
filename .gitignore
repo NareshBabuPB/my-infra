@@ -1,5 +1,9 @@
 # terraform files
 .terraform/
+*.tfplan
+*.tfstate
+*.backup
+plan_output
 
 # sensitive files
 *.secret.tf

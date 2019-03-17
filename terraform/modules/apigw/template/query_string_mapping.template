@@ -1,0 +1,3 @@
+{
+  "inputNumber": "$input.params('inputNumber')"
+}

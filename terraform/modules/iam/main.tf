@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "cw_log_policy" {
     ]
 
     resources = [
-      "*"
+      "*",
     ]
 
     effect = "Allow"
@@ -40,5 +40,5 @@ resource "aws_iam_role" "cw_log" {
 
 resource "aws_iam_role_policy" "cw_log" {
   policy = "${data.aws_iam_policy_document.cw_log_policy.json}"
-  role = "${aws_iam_role.cw_log.id}"
+  role   = "${aws_iam_role.cw_log.id}"
 }
